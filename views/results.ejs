@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Information</title>
+    <!--estilos-->
+    <!--Materialize-->
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!--js-->
+    <!--jquery-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
+    <!-- Materialize Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--estilos propios-->
+    <style>
+        .container {
+            width: 50%;
+            border: 2px solid black;
+            padding: 40px;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <h5>Submitted Information</h5>
+            <p>Name:
+                <%= name %>
+            </p>
+            <p>Dojo Location:
+                <%= location %>
+            </p>
+            <p>Favorite Language:
+                <%= favleng %>
+            </p>
+            <p>Comment:
+                <%= comment %>
+            </p>
+
+
+
+        </div>
+        <a href="/" class="waves-effect waves-light btn">go back</a>
+    </div>
+</body>
+
+</html>

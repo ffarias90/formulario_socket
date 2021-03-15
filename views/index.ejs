@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Socket</title>
+    <!--estilos-->
+    <!--Materialize-->
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!--js-->
+    <!--jquery-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
+    <!-- Materialize Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--estilos propios-->
+    <style>
+        .container {
+            width: 50%;
+            border: 2px solid black;
+            padding: 40px;
+            margin-top: 100px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div id="info" class="p-5">
+
+            <p id="numero"></p>
+        </div>
+        <div class="divider"></div>
+        <div class="row">
+            <form id="formulario" action="/results" method="POST" class="col s12">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="last_name" type="text" class="validate" name="name">
+                        <label for="last_name">Name</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <select id="location" name="location">                        
+                        <option value="Mountain View">Mountain View</option>
+                        <option value="New York">New York</option>
+                        <option value="Japan">Japan</option>
+                        </select>
+                        <label>Dojo Location</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <select id="languaje" name="favleng">                        
+                        <option value="Javascript">Javascript</option>
+                        <option value="Python">Python</option>
+                        <option value="C++">C++</option>
+                        </select>
+                        <label>Favorite Languaje</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <textarea id="comment" class="materialize-textarea" name="comment"></textarea>
+                        <label for="textarea1">Comment (optional)</label>
+                    </div>
+                </div>
+                <input id="btn" type="submit" value="Submit">
+            </form>
+
+
+
+
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('select').formSelect();
+
+
+
+            $("#formulario").on('submit', function(ev) {
+                ev.preventDefault();
+                $('#info').addClass('teal lighten-2');
+                let name = $("#last_name").val();
+                let location = $("#location").val();
+                let languaje = $("#languaje").val();
+                let comment = $("#comment").val();
+
+                //alert(name);
+
+                //conectar socket con el puerto
+                const socket = io('http://localhost:8000');
+
+                socket.emit('formulario_publicacion', {
+                    nombre: name,
+                    location: location,
+                    languaje: languaje,
+                    comment: comment
+                });
+
+                //mensaje en consola navegador
+                socket.on('formulario_publicacion', function(data) {
+                    console.log('Llego del servidor la siguiente información', data);
+                    //$('#numero').html(data.msg);
+                    /*$('#nombre').html(name);
+                    $('#locacion').html(location);
+                    $('#fav_leng').html(languaje);
+                    $('#comentario').html(comment);*/
+                });
+
+                socket.on('numero', function(data) {
+                    $('#numero').html('Your lucky numer emitted by the server is: ' + data.numero);
+
+                    $('#info').prepend(`
+            <div class="">
+            <div class="row">
+                
+            <div>
+                name: ` + name + ` 
+            </div>
+            <div>
+                location: ` + location + ` 
+            </div> 
+            <div>
+                language: ` + languaje + ` 
+            </div>   
+            <div>
+                comment: ` + comment + ` 
+            </div>                   
+        `);
+                });
+
+
+
+
+
+
+            });
+
+        });
+    </script>
+</body>
+
+</html>
